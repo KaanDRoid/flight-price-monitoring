@@ -1,0 +1,8 @@
+depart_date,origin,destination,gate,return_date,found_at,trip_class,price_eur,number_of_changes,duration,distance,show_to_affiliates,actual
+2025-06-20,ANK,IST,City.Travel,2025-06-25,2025-06-14T15:13:10,0,39,0,135,323,True,True
+2025-07-01,ANK,IST,Авиасейлс,2025-07-06,2025-06-18T16:43:14,0,51,0,135,323,True,True
+2025-07-15,ANK,IST,City.Travel,2025-07-19,2025-06-14T17:09:09,0,70,0,135,323,True,True
+2025-07-14,ANK,IST,City.Travel,2025-07-17,2025-06-17T12:22:52,0,72,0,135,323,True,True
+2025-07-12,ANK,IST,Авиасейлс,2025-08-03,2025-06-18T14:01:56,0,74,0,135,323,True,True
+2025-06-19,ANK,IST,City.Travel,2025-06-22,2025-06-17T19:51:34,0,85,0,145,323,True,True
+2025-07-12,ANK,IST,City.Travel,2025-07-15,2025-06-13T04:13:21,0,85,0,135,323,True,True

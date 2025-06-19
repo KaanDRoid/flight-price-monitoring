@@ -1,0 +1,14 @@
+gate,total_flights,avg_price_diff,std_price_diff,avg_change_pct,min_change_pct,max_change_pct,avg_current_price,pricing_strategy
+City.Travel,56,3.61,76.74,1.98,-19.86,70.0,467.96,Moderate Increase
+Clickavia,1,1.0,,1.45,1.45,1.45,70.0,Moderate Increase
+Aviakassa,64,1.91,5.03,0.89,-9.34,12.2,240.98,Stable
+OneTwoTrip,5,7.0,3.08,0.89,0.68,1.68,817.4,Stable
+Kupi.com,64,5.25,8.74,0.82,-1.1,5.57,581.84,Stable
+Kiwi.com,1,2.0,,0.79,0.79,0.79,256.0,Stable
+SuperKassa,1,5.0,,0.77,0.77,0.77,652.0,Stable
+SWISS,4,4.0,0.0,0.71,0.71,0.71,570.0,Stable
+Lufthansa,6,4.0,2.53,0.69,0.0,1.38,587.33,Stable
+Biletix,12,6.17,2.37,0.63,0.0,0.72,912.58,Stable
+MEGO.travel,2,8.0,9.9,0.59,0.48,0.69,1192.5,Stable
+Авиасейлс,14,5.21,10.6,0.55,-1.88,3.36,832.93,Stable
+Trip.com,6,3.33,2.8,0.45,0.0,0.71,513.33,Stable

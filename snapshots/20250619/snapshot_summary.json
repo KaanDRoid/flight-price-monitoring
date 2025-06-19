@@ -1,0 +1,12 @@
+{
+  "collection_timestamp": "2025-06-19T11:16:21.822003",
+  "snapshot_date": "20250619",
+  "total_flights": 193,
+  "routes_covered": 10,
+  "active_otas": 13,
+  "price_range_min": 39.0,
+  "price_range_max": 2176.0,
+  "average_price": 495.2383419689119,
+  "date_range_start": "2025-06-19",
+  "date_range_end": "2026-05-16"
+}

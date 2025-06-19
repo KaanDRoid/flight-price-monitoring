@@ -1,0 +1,8 @@
+depart_date,origin,destination,gate,return_date,found_at,trip_class,price_eur,number_of_changes,duration,distance,show_to_affiliates,actual
+2025-07-15,BCN,FRA,City.Travel,2025-07-16,2025-06-14T14:49:11,0,111,1,710,1041,True,True
+2025-07-05,BCN,FRA,City.Travel,2025-07-06,2025-06-14T11:44:47,0,186,1,1265,1041,True,True
+2025-07-09,BCN,FRA,MEGO.travel,2025-07-20,2025-06-14T17:31:01,0,209,1,2535,1094,True,True
+2025-06-26,BCN,FRA,Kiwi.com,2025-06-29,2025-06-18T18:53:21,0,220,1,875,1094,True,True
+2025-06-21,BCN,FRA,Kupi.com,2025-06-25,2025-06-17T10:10:28,0,250,0,255,1094,True,True
+2025-07-03,BCN,FRA,Kiwi.com,2025-07-03,2025-06-17T14:14:27,0,256,1,585,1094,True,True
+2025-08-15,BCN,FRA,Aviakassa,2025-08-17,2025-06-14T07:13:25,0,270,1,970,1094,True,True
