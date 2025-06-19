@@ -4,13 +4,13 @@ This project implements a comprehensive flight price monitoring system that trac
 
 ## 📊 Project Overview
 
-This system fetches flight prices from multiple routes and OTAs, creating daily snapshots for time-series analysis of pricing patterns and competitive dynamics.
+This system fetches flight prices from multiple routes and OTAs, creating daily snapshots for time series analysis of pricing patterns and competitive dynamics.
 
 ## 🏗️ System Architecture
 
 ### Data Collection Pipeline
 - **Primary Script**: `fetch_prices.py` - Fetches current flight prices
-- **Snapshot System**: Daily data collection with timestamp-based file naming
+- **Snapshot System**: Daily data collection with timestamp based file naming
 - **Routes Monitored**: 10 international routes across 4 continents
 
 ### Analysis Components
@@ -57,7 +57,7 @@ The system now uses a clean, organized file structure:
 
 - **Price Volatility**: Daily price changes by route and OTA
 - **Competitive Positioning**: Market share and pricing strategies
-- **Seasonal Trends**: Long-term pricing patterns
+- **Seasonal Trends**: Long term pricing patterns
 - **Route Performance**: Most/least competitive routes
 
 ## 🎯 Business Value
