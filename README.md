@@ -44,6 +44,20 @@ From the notebook and comparison outputs:
 
 With only two days of data these numbers mostly show day-to-day noise, not trends.
 
+## Figures
+
+Comparison of the two snapshots from `price_comparison_analysis.py` (offers matched on route, departure date and OTA):
+
+![Price comparison 18 vs 19 June 2025](docs/images/price_comparison.png)
+
+Offer count and price level per OTA, from the DuckDB notebook:
+
+![Offers and prices by OTA](docs/images/ota_overview.png)
+
+Cheapest offer per route and average price by departure month, from the DuckDB notebook:
+
+![Route prices and monthly averages](docs/images/route_prices.png)
+
 ## How to run
 
 ```bash
@@ -87,6 +101,7 @@ snapshots/
     route_breakdown/
     snapshot_summary.json
 analysis_results/               # comparison output for 20250618 vs 20250619
+docs/images/                    # figures used in this README
 ```
 
 ## License
