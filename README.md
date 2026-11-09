@@ -1,97 +1,94 @@
-# ✈️ Flight Price Monitoring with Time-Series Analysis
+# Flight Price Monitoring
 
-This project implements a comprehensive flight price monitoring system that tracks pricing changes across multiple Online Travel Agencies (OTAs) over time.
+A small project that collects daily snapshots of flight prices for a fixed set of routes from the Travelpayouts (Aviasales) API and compares them over time. Each run of the fetch script saves one snapshot. A comparison script matches offers between two snapshots and reports how prices changed per route and per online travel agency (OTA), and a DuckDB notebook does the exploratory analysis on top of the snapshots.
 
-## 📊 Project Overview
+## Data source
 
-This system fetches flight prices from multiple routes and OTAs, creating daily snapshots for time series analysis of pricing patterns and competitive dynamics.
+Prices come from the Travelpayouts Data API endpoint `v2/prices/latest`. This endpoint returns cached prices that Aviasales users found recently, not live fares, so each snapshot is what the API had cached on that day. For each route the script asks for up to 30 offers in EUR, sorted by price. The OTA selling the ticket is in the `gate` column.
 
-## 🏗️ System Architecture
+Routes requested (`ROUTES` in `fetch_prices.py`):
 
-### Data Collection Pipeline
-- **Primary Script**: `fetch_prices.py` - Fetches current flight prices
-- **Snapshot System**: Daily data collection with timestamp based file naming
-- **Routes Monitored**: 10 international routes across 4 continents
+| Origin | Destination |
+|---|---|
+| BCN Barcelona | MAD Madrid |
+| BCN Barcelona | FRA Frankfurt |
+| IST Istanbul | BCN Barcelona |
+| BCN Barcelona | IST Istanbul |
+| ESB Ankara | IST Istanbul |
+| IST Istanbul | NRT Tokyo |
+| BCN Barcelona | LAX Los Angeles |
+| IST Istanbul | EZE Buenos Aires |
+| ESB Ankara | LAX Los Angeles |
+| NRT Tokyo | EZE Buenos Aires |
 
-### Analysis Components
-1. **Static Analysis**: Current pricing patterns (`flight_analysis_duckdb.ipynb`)
-2. **Time Series Analysis**: Daily price change monitoring (`price_comparison_analysis.py`)
-3. **Competitive Intelligence**: OTA pricing strategy insights
+The API answers with city codes, so ESB shows up as ANK, NRT as TYO and EZE as BUE in the data. ESB -> LAX returned no offers in either snapshot.
 
-## 📁 File Structure
+Two snapshots are included: `snapshots/20250618` and `snapshots/20250619`.
+
+## Approach
+
+1. `fetch_prices.py` calls the API for every route and writes `snapshots/YYYYMMDD/all_routes.csv`, one CSV per route under `route_breakdown/`, and a `snapshot_summary.json`.
+2. `price_comparison_analysis.py` loads two snapshots and inner-joins them on origin, destination, departure date and OTA. For every matched offer it computes the absolute and percentage price change, buckets the change (major/minor drop, stable within 1%, minor/major increase) and aggregates by OTA and by route. It writes CSVs and a 3x3 chart grid to `analysis_results/`.
+3. `flight_analysis_duckdb.ipynb` registers the combined snapshots as a DuckDB table and uses SQL for OTA share and price levels, route price ranges, price spread per route, monthly averages by departure month, and a look at the comparison results. Charts are made with matplotlib and seaborn.
+
+## Results (18 vs 19 June 2025)
+
+From the notebook and comparison outputs:
+
+- 195 offers on the first day and 193 on the second, 388 in total, from 13 OTAs across 9 routes.
+- Aviakassa (27.1%), City.Travel (25.5%) and Kupi.com (24.7%) supplied most of the offers.
+- Average offer price went from EUR 496.85 to EUR 495.24 (-0.32%).
+- 236 offers could be matched across both days and 219 of them changed price. The mean change was +1.07% with a standard deviation of 5.34%. 8 offers rose by more than 5% and 3 fell by more than 5%.
+- The largest single moves were both on TYO -> BUE at City.Travel: +413 EUR and -389 EUR.
+- The cheapest route was ANK -> IST (from EUR 39), the most expensive TYO -> BUE (average EUR 1,802.96).
+
+With only two days of data these numbers mostly show day-to-day noise, not trends.
+
+## How to run
+
+```bash
+pip install -r requirements.txt
+```
+
+Create a `.env` file next to `fetch_prices.py` with your Travelpayouts API token:
 
 ```
-├── fetch_prices.py              # Main data collection script
-├── price_comparison_analysis.py  # Daily comparison analysis
-├── flight_analysis_duckdb.ipynb # Static analysis notebook
-├── snapshots/                   # Daily snapshot storage
-│   ├── 20250618/               # First snapshot (baseline)
-│   │   ├── all_routes.csv
-│   │   └── route_breakdown/
-│   └── 20250619/               # Second snapshot
-│       ├── all_routes.csv
-│       └── route_breakdown/
-└── analysis_results/           # Generated insights and visualizations
+TRAVELPAYOUTS_TOKEN=your_token_here
 ```
 
-## 💾 Data Management
+Then:
 
-The system now uses a clean, organized file structure:
+```bash
+# take a snapshot for today (writes snapshots/YYYYMMDD/)
+python fetch_prices.py
 
-- **Snapshot System**: All flight data is stored in timestamped snapshot directories (`snapshots/YYYYMMDD/`)
-- **No Duplicates**: CSV files are saved only in their respective snapshot directories, avoiding clutter in the main project folder
-- **Organized Storage**: Each snapshot contains:
-  - `all_routes.csv`: Combined data from all routes
-  - `route_breakdown/`: Individual CSV files for each route
-  - `snapshot_summary.json`: Metadata and summary statistics
-- **Clean Workspace**: The main project directory contains only code files and configuration
-
-## 🔄 Daily Monitoring Workflow
-
-1. **00:00 UTC**: Automated data collection via `fetch_prices.py`
-2. **Data Storage**: Timestamped snapshots in organized directories
-3. **Comparison Analysis**: Price change detection and competitive analysis
-4. **Insights Generation**: Automated reports on pricing trends
-
-## 📈 Key Metrics Tracked
-
-- **Price Volatility**: Daily price changes by route and OTA
-- **Competitive Positioning**: Market share and pricing strategies
-- **Seasonal Trends**: Long term pricing patterns
-- **Route Performance**: Most/least competitive routes
-
-## 🎯 Business Value
-
-- **Market Intelligence**: Real time competitive pricing insights
-- **Dynamic Pricing**: Data driven pricing strategy recommendations
-- **Customer Value**: Optimal booking timing recommendations
-- **Trend Analysis**: Seasonal and market pattern identification
-
-## 🚀 Getting Started
-
-1. Clone the repository
-2. Install dependencies: `pip install -r requirements.txt`
-3. Set up environment variables in `.env`
-4. Run initial snapshot: `python fetch_prices.py`
-5. Schedule daily runs for continuous monitoring
-
-## 📊 Analysis Examples
-
-### Daily Price Changes
-```python
-# Compare today vs yesterday (It can be extend of course)
+# compare two snapshots (writes to analysis_results/)
 python price_comparison_analysis.py --date1 20250618 --date2 20250619
+
+# exploratory analysis
+jupyter notebook flight_analysis_duckdb.ipynb
 ```
 
-### Competitive Analysis
-```python
-# Analyze OTA pricing strategies
-python price_comparison_analysis.py --mode ota_analysis
+`price_comparison_analysis.py` also accepts `--snapshots-dir` if the snapshots live somewhere else. For a longer time series, schedule `fetch_prices.py` once a day (cron, Task Scheduler); each day goes into its own folder.
+
+## Repository layout
+
+```
+fetch_prices.py                 # collects one snapshot from the API
+price_comparison_analysis.py    # compares two snapshots, writes CSVs and a chart
+flight_analysis_duckdb.ipynb    # DuckDB / SQL exploratory analysis
+requirements.txt
+snapshots/
+  20250618/
+    all_routes.csv
+    route_breakdown/            # one CSV per route
+  20250619/
+    all_routes.csv
+    route_breakdown/
+    snapshot_summary.json
+analysis_results/               # comparison output for 20250618 vs 20250619
 ```
 
-## 🎯 Project Goals
+## License
 
-- Monitor market conditions and competitive pricing shifts
-- Identify optimal booking windows for different routes
-- Track OTA pricing strategies and market positioning
-- Provide actionable insights for pricing decisions
+MIT, see `LICENSE`.
